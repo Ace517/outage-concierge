@@ -7,7 +7,7 @@ from ui import esc, html, personas, prem, ss
 html("""
 <div class="hero">
 <div class="hero-title">AI Outage Concierge</div>
-<p class="hero-sub">Tell us about your home and we'll answer three questions: will you lose power, how long could it last, and what should you do about it?</p>
+<p class="hero-sub">Pick your home and see your outage risk, how long power could be out, and exactly what to do before the storm hits!</p>
 <div class="demo-note">Demo with sample data. No account or password. Nothing you enter here is saved.</div>
 </div>
 """)
