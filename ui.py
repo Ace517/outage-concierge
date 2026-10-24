@@ -25,10 +25,18 @@ CSS = """
 :root{--ink:#14213D;--blue:#1F5FA8;--sky:#E8F0FA;--line:#C9D5E5;--muted:#4A5A72;--gold:#F2B134;}
 .stApp{background:#F4F7FB;font-family:'Barlow','Segoe UI',system-ui,sans-serif;color:var(--ink);}
 .stApp p,.stApp li,.stApp label,.stApp button,.stApp input,.stApp textarea,.stApp [data-baseweb="select"] div{font-family:'Barlow','Segoe UI',system-ui,sans-serif;}
-[data-testid="stToolbar"],[data-testid="stDeployButton"],.stDeployButton{visibility:hidden;height:0;}
+[data-testid="stAppDeployButton"],[data-testid="stMainMenu"],[data-testid="stDeployButton"],.stDeployButton{display:none;}
 .block-container{max-width:1020px;padding-top:1rem;padding-bottom:4rem;}
 #MainMenu,footer{visibility:hidden;}
 header[data-testid="stHeader"]{background:transparent;}
+section[data-testid="stSidebar"][data-collapsed="true"]{transform:none!important;width:64px!important;min-width:64px!important;max-width:64px!important;visibility:visible!important;transition:none!important;}
+section[data-testid="stSidebar"][data-collapsed="true"] [data-testid="stSidebarUserContent"],
+section[data-testid="stSidebar"][data-collapsed="true"] [data-testid="stSidebarNavSeparator"],
+section[data-testid="stSidebar"][data-collapsed="true"] [data-testid="stSidebarResizeHandle"],
+section[data-testid="stSidebar"][data-collapsed="true"] [data-testid="stSidebarNavLink"] span[label]{display:none!important;}
+section[data-testid="stSidebar"][data-collapsed="true"] [data-testid="stSidebarContent"]{overflow:hidden;padding-top:12px;}
+section[data-testid="stSidebar"][data-collapsed="true"] [data-testid="stSidebarNav"]{padding:0 8px;}
+section[data-testid="stSidebar"][data-collapsed="true"] [data-testid="stSidebarNavLink"]{justify-content:center;padding:10px 0;}
 .hero{background:var(--ink);color:#fff;border-radius:10px;padding:30px 34px 26px;border-bottom:6px solid var(--gold);margin-bottom:10px;}
 .hero-title{font-family:'Barlow Semi Condensed','Barlow',sans-serif;font-weight:700;font-size:3.1rem;line-height:1.08;letter-spacing:.2px;margin-bottom:8px;}
 .hero-sub{font-size:1.18rem;line-height:1.45;max-width:46rem;margin:.6rem 0 0;color:#DCE6F5;}
