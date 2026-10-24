@@ -42,7 +42,7 @@ queue time (about a day in a major storm), range width, and the alert rules.
 Honest limits: one storm in the data, no weather, no customer outage counts, day-level dates only.
 The restoration crew and queue assumptions were tuned on that one storm; the range contains the observed finish day for 64% of circuits (in-sample).
 
-## Demo path for the video (about 2 minutes)
+## Demo path for the video (the submission video is 3 minutes and must also cover team name, project name, concept and development process)
 
 1. Maria (Very high risk, medical need). Show the gauge, the three reasons, the confidence dots.
 2. Drag the crews slider and the damaged-items slider. The range and the "what could move it" table update.

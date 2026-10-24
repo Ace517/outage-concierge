@@ -4,6 +4,21 @@ Source: the challenge's minimum demo as recorded in `PROJECT_BRIEF.md`. The offi
 (`docs/HackOHIO_2026_AI_Outage_Concierge_Challenge.docx` in github.com/hackohio/aep_challenge_hack26) has not been read yet,
 so check this list against it. Judges score the **submitted video**, so every row should be easy to show on screen.
 
+## Judging and submission (HackOHI/O 2026 guidebook)
+
+**Deadline: hacking ends 10:00 AM Sunday, Oct 25.** Submit a **3-minute video** covering: team name, project name,
+concept, execution, and the development process. Awards are announced at the Sunday evening showcase.
+Only work done during the event is judged; disclose any prior development.
+
+| Judging criterion | What to show in the video |
+|---|---|
+| Innovation | Plain-language answers for one home, with honest ranges and a visible "estimate vs confirmed" language |
+| Creativity | Live what-if sliders that change the range, the messages and the prep list together |
+| Communication | Clear story: one customer (Maria) before, during and after a storm; each page answers one question |
+| Project development | Real AEP data turned into a working multipage app; how the engine works ("How this works" page) |
+| Impact | Medical-needs customer gets earlier, clearer steps; fewer calls when estimates are honest ranges |
+| Handling challenges and setbacks | No outage labels or weather in the data, so we built a transparent score instead of faking an ML model; calibrated on one storm and said so |
+
 ## What the challenge asks for
 
 | # | Requirement | Where it lives now | Status | Ideas to make it stand out |
@@ -40,5 +55,5 @@ so check this list against it. Judges score the **submitted video**, so every ro
 | How this works | Data, method, privacy, limits | |
 
 ## Still unknown
-- Official judging criteria and submission deadline (HackOHI/O Judging Guide), see Open items in `PROJECT_BRIEF.md`.
+- Any scoring weights or rubric detail beyond the six criteria above (the guidebook lists criteria only).
 - Anything in the official challenge doc beyond the minimum demo above.
