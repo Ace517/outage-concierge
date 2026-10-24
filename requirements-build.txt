@@ -1,0 +1,4 @@
+# only needed to rebuild data/processed/ from the raw shapefiles
+geopandas
+pyogrio
+openpyxl

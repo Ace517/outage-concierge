@@ -1,0 +1,16 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Raw AEP data (rebuild with build_data.py; data/processed/ is committed)
+data/raw/
+
+# Editors and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Local Claude settings
+.claude/settings.local.json

@@ -1,0 +1,40 @@
+{
+  "premises": 117642,
+  "circuits": 110,
+  "storm_records": 1247,
+  "storm_circuits_hit": 63,
+  "storm_window": "Feb 12 to 18, 2025",
+  "direct_hit_premises": 3390,
+  "direct_hit_share": 0.0288,
+  "circuit_exposed_share": 0.713,
+  "underground_share": 0.446,
+  "repair_days_p50": 1.0,
+  "repair_days_p90": 2.0,
+  "repair_days_p99": 5.0,
+  "sys_dpk": 10.6,
+  "backtest": {
+    "circuits": 62,
+    "overlap": 40,
+    "share": 0.645
+  },
+  "personas": [
+    {
+      "name": "Maria",
+      "hid": "01BE6120",
+      "medical": true,
+      "blurb": "Someone at home uses medical equipment. Overhead service on one of the hardest-hit circuits."
+    },
+    {
+      "name": "Devon",
+      "hid": "007D7EF5",
+      "medical": false,
+      "blurb": "Underground service on a circuit that held up well in the last big storm."
+    },
+    {
+      "name": "Priya",
+      "hid": "00A9E77B",
+      "medical": false,
+      "blurb": "Overhead service on a mid-range circuit."
+    }
+  ]
+}
