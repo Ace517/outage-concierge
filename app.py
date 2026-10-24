@@ -14,6 +14,7 @@ import ui  # noqa: E402  (set_page_config must run first)
 ui.init_state()
 ui.html(ui.CSS)
 
+welcome = st.Page("views/welcome.py", title="Your details", icon=":material/person:", url_path="welcome")
 pg = st.navigation([
     st.Page("views/overview.py", title="Overview", icon=":material/home:", default=True),
     st.Page("views/risk.py", title="Will I lose power?", icon=":material/bolt:"),
@@ -22,6 +23,12 @@ pg = st.navigation([
     st.Page("views/alerts.py", title="Outage alerts", icon=":material/notifications:"),
     st.Page("views/messages.py", title="Messages we send", icon=":material/sms:"),
     st.Page("views/about.py", title="How this works", icon=":material/info:"),
-])
-ui.sidebar()
+    welcome,
+], position="sidebar" if ui.ss.onboarded else "hidden")
+
+# Everyone starts on the details page.
+if not ui.ss.onboarded and pg.url_path != "welcome":
+    st.switch_page(welcome)
+if pg.url_path != "welcome":
+    ui.sidebar()
 pg.run()

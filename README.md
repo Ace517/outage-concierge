@@ -44,6 +44,7 @@ The restoration crew and queue assumptions were tuned on that one storm; the ran
 
 ## Demo path for the video (the submission video is 3 minutes and must also cover team name, project name, concept and development process)
 
+0. The site opens on "Your details": enter a first name, city, street and home, or tap a demo customer.
 1. Maria (Very high risk, medical need). Show the gauge, the three reasons, the confidence dots.
 2. Drag the crews slider and the damaged-items slider. The range and the "what could move it" table update.
 3. Scroll: red safety box, medical steps, alert rules (tick "signed up"), then the four message tabs.

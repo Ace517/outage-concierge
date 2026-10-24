@@ -137,22 +137,20 @@ ss = st.session_state
 def init_state():
     if "hid" not in ss:
         ss.hid = personas[0]["hid"]
-        ss.medical = personas[0]["medical"]
+        ss.medical = False  # never assumed; only the user (or a demo customer) declares it
         ss.sev = "Major storm"
         ss.enrolled = False
+        ss.name = ""
+        ss.onboarded = False
+    # The sidebar widgets own these keys; re-assigning keeps them while the sidebar is hidden (details page).
+    for k in ("sev", "medical", "enrolled"):
+        ss[k] = ss[k]
 
 
 def pick_persona(i: int):
     ss.hid = personas[i]["hid"]
     ss.medical = personas[i]["medical"]
-
-
-def use_location(key: str):
-    ss.hid = ss[key]
-
-
-def use_outside():
-    ss.hid = "NONE"
+    ss.name = personas[i]["name"]
 
 
 def kept_slider(col, label: str, lo: int, hi: int, default: int, key: str) -> int:
@@ -168,29 +166,24 @@ def kept_slider(col, label: str, lo: int, hi: int, default: int, key: str) -> in
 # ---------------------------------------------------------------- sidebar
 def sidebar():
     with st.sidebar:
-        st.markdown("### Set the scene")
-        st.markdown("**Choose a customer** (names are fictional)")
+        who = ss.name or "Your home"
+        if ss.hid == "NONE":
+            where = "outside our data"
+        elif ss.hid in prem.index:
+            where = f"{prem.loc[ss.hid].city}, {prem.loc[ss.hid].road}"
+        else:
+            where = ""
+        st.markdown(f"### {who}")
+        st.caption(where)
+        st.page_link("views/welcome.py", label="Change my details", icon=":material/edit:")
+        st.markdown("**Demo customers** (names are fictional)")
         pc = st.columns(len(personas))
         for i, p in enumerate(personas):
             pc[i].button(p["name"], key=f"persona{i}", on_click=pick_persona, args=(i,),
-                         use_container_width=True, type="primary" if ss.hid == p["hid"] else "secondary")
-        current = next((p for p in personas if p["hid"] == ss.hid), None)
+                         use_container_width=True, type="primary" if (ss.hid == p["hid"] and ss.name == p["name"]) else "secondary")
+        current = next((p for p in personas if p["hid"] == ss.hid and p["name"] == ss.name), None)
         if current:
             st.caption(current["blurb"])
-        elif ss.hid == "NONE":
-            st.caption("A location outside our data, to show the fallback.")
-        else:
-            st.caption("A location you picked.")
-        with st.expander("Pick another location"):
-            cities = prem.city.value_counts().index.tolist()
-            city = st.selectbox("City", cities, key="city_pick")
-            roads = sorted(prem[prem.city == city].road.unique())
-            road = st.selectbox("Road (house numbers are never shown)", roads, key=f"road_{city}")
-            locs = sorted(prem[(prem.city == city) & (prem.road == road)].hid)
-            lkey = f"loc_{city}_{road}"
-            st.selectbox("Anonymous location", locs[:40], format_func=fmt_hid, key=lkey)
-            st.button("Use this location", on_click=use_location, args=(lkey,))
-            st.button("Try a location outside our data", on_click=use_outside)
         st.radio("Storm scenario", engine.SEV_ORDER, key="sev")
         st.caption(engine.SEVERITIES[ss.sev]["blurb"])
         st.checkbox("Medical equipment at home", key="medical", help="You are declaring this. We never guess it from your address or account.")

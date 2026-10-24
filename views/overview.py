@@ -17,9 +17,10 @@ html(f"""
 <div>{chip("act")}<br>Steps you can take.</div>
 </div>
 """)
-st.caption("Pick a customer and a storm scenario in the sidebar. Every page updates to match.")
-
 ctx = ui.context()
+greet = f"Hi {ui.ss.name}, here's your storm outlook" if ui.ss.name else "Your storm outlook"
+html(f'<h2 class="q">{esc(greet)}</h2>')
+st.caption("Change the storm scenario in the sidebar, or use \"Change my details\". Every page updates to match.")
 risk_txt = "Not enough data" if ctx.conf == "Low" else f"{ctx.band} risk"
 risk_color = "var(--ink)" if ctx.conf == "Low" else ui.BAND_TEXT[ctx.band]
 alerts_txt = "Signed up" if ui.ss.enrolled else "Qualifies, not signed up"
