@@ -163,6 +163,9 @@ def main():
     mid = ok[(ok.svc == "Overhead") & ~ok.hit25 & (ok.pct.between(0.35, 0.65))].copy()
     mid["gap"] = (mid.E - 0.45).abs()
     c = mid.sort_values(["gap", "hid"]).iloc[0]
+    hit = ok[(ok.svc == "Underground") & ok.hit25 & (ok.pct.between(0.35, 0.65))].copy()
+    hit["gap"] = (hit.pct - 0.5).abs()
+    d = hit.sort_values(["gap", "hid"]).iloc[0]
     personas = [
         {"name": "Maria", "hid": a.hid, "medical": True,
          "blurb": "Someone at home uses medical equipment. Overhead service on one of the hardest-hit circuits."},
@@ -170,6 +173,8 @@ def main():
          "blurb": "Underground service on a circuit that held up well in the last big storm."},
         {"name": "Priya", "hid": c.hid, "medical": False,
          "blurb": "Overhead service on a mid-range circuit."},
+        {"name": "David", "hid": d.hid, "medical": False, "enrolled": True,
+         "blurb": "Underground service, but equipment that feeds his home was damaged in the last big storm. Already signed up for alerts."},
     ]
 
     meta = {

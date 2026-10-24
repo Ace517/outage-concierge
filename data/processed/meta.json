@@ -35,6 +35,13 @@
       "hid": "00A9E77B",
       "medical": false,
       "blurb": "Overhead service on a mid-range circuit."
+    },
+    {
+      "name": "David",
+      "hid": "0D0E3999",
+      "medical": false,
+      "enrolled": true,
+      "blurb": "Underground service, but equipment that feeds his home was damaged in the last big storm. Already signed up for alerts."
     }
   ]
 }

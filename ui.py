@@ -150,6 +150,7 @@ def init_state():
 def pick_persona(i: int):
     ss.hid = personas[i]["hid"]
     ss.medical = personas[i]["medical"]
+    ss.enrolled = personas[i].get("enrolled", False)
     ss.name = personas[i]["name"]
 
 
@@ -177,9 +178,9 @@ def sidebar():
         st.caption(where)
         st.page_link("views/welcome.py", label="Change my details", icon=":material/edit:")
         st.markdown("**Demo customers** (names are fictional)")
-        pc = st.columns(len(personas))
+        pc = st.columns(2)
         for i, p in enumerate(personas):
-            pc[i].button(p["name"], key=f"persona{i}", on_click=pick_persona, args=(i,),
+            pc[i % 2].button(p["name"], key=f"persona{i}", on_click=pick_persona, args=(i,),
                          use_container_width=True, type="primary" if (ss.hid == p["hid"] and ss.name == p["name"]) else "secondary")
         current = next((p for p in personas if p["hid"] == ss.hid and p["name"] == ss.name), None)
         if current:
