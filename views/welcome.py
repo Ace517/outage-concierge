@@ -18,7 +18,9 @@ for k, v in {"w_name": ss.get("name", ""), "w_sev": ss.sev, "w_medical": ss.medi
              "w_outside": ss.hid == "NONE"}.items():
     if k not in ss:
         ss[k] = v
-cities = prem.city.value_counts().index.tolist()
+cities = [c for c in prem.city.value_counts().index if c != ui.NO_TOWN]
+if (prem.city == ui.NO_TOWN).any():
+    cities.append(ui.NO_TOWN)
 if "w_city" not in ss:
     ss.w_city = here.city if here is not None else cities[0]
 

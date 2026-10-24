@@ -189,7 +189,7 @@ def reasons(res, circ_dmg, circ_dpk, svc, devs, chain_ok, hit, n=3):
         texts["devices"] = (f"{int(devs)} protective devices (fuses, reclosers) sit between you and the "
                             "substation. A problem at any one of them can cut your power.")
     else:
-        texts["devices"] = (f"Only {int(devs)} protective devices sit between you and the substation, "
+        texts["devices"] = (f"Only {int(devs)} protective device{' sits' if int(devs) == 1 else 's sit'} between you and the substation, "
                             "so there are fewer places for a failure to cut you off.")
     ranked = sorted(W, key=lambda k: W[k] * abs(v[k] - 0.5), reverse=True)[:n]
     out = []
