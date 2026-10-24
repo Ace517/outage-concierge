@@ -64,7 +64,9 @@ def main():
 
     # The processed premises file must line up row-for-row with the raw customers, so existing location codes stay valid.
     prem = pd.read_csv(OUT / "premises.csv.gz", dtype={"hid": str})
-    cols = ["city", "road", "circuit", "svc", "devs", "chain_ok", "hit25"]
+    prem["city"] = prem.city.replace({"??": "Town not recorded"})  # same cleanup as build_data.py
+    prem["road"] = prem.road.replace({"??": "Unnamed Road"})
+    cols =["city", "road", "circuit", "svc", "devs", "chain_ok", "hit25"]
     if len(prem) != len(raw_prem) or not (prem[cols].reset_index(drop=True) == raw_prem[cols].reset_index(drop=True)).all().all():
         sys.exit("premises.csv.gz does not match the raw data row-for-row. Re-run build_data.py first.")
 
@@ -131,7 +133,7 @@ def main():
                                             y=pts.y.to_numpy()[prem.hex.isin(keep).to_numpy()])
     towns = []
     for city, g in kept.groupby("city"):
-        if len(g) < 1500 or city == "Unknown":
+        if len(g) < 1500 or city in ("Unknown", "Town not recorded"):
             continue
         c = gpd.GeoSeries([Point(g.x.median(), g.y.median())], crs=CRS_M).to_crs(4326).iloc[0]
         towns.append({"name": city, "lon": round(c.x, 4), "lat": round(c.y, 4), "n": int(len(g))})

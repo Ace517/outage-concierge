@@ -15,6 +15,7 @@ import streamlit as st
 import engine
 
 DATA = Path(__file__).parent / "data" / "processed"
+NO_TOWN = "Town not recorded"
 
 # Color system (60-30-10): light cool neutrals, navy + brand blue, amber accent for calls to action.
 # Risk is one burnt-orange hue, light to dark: orange complements the blue brand and stays readable with
@@ -129,6 +130,9 @@ def fmt_hid(h: str) -> str:
 @st.cache_data
 def load():
     prem = pd.read_csv(DATA / "premises.csv.gz", dtype={"hid": str})
+    # The source data uses "??" where the town or street wasn't recorded.
+    prem["city"] = prem.city.replace({"??": NO_TOWN})
+    prem["road"] = prem.road.replace({"??": "Unnamed Road"})
     circ = pd.read_csv(DATA / "circuits.csv").set_index("circuit")
     meta = json.loads((DATA / "meta.json").read_text())
     prem["pct"] = prem.circuit.map(circ.pct)

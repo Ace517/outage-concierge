@@ -132,8 +132,8 @@ def load(raw: Path):
             break
     prem = pd.DataFrame({
         "hid": hid.values,
-        "city": cust.city.fillna("Unknown").str.title().values,
-        "road": cust.road_name.fillna("Unnamed road").str.title().values,
+        "city": cust.city.fillna("??").str.title().replace({"??": "Town not recorded"}).values,
+        "road": cust.road_name.fillna("Unnamed road").str.title().replace({"??": "Unnamed Road"}).values,
         "circuit": cust.circuit.values,
         "svc": cust.kind_of_se.fillna("Unknown").values,
         "devs": cust.premise.map(lambda s: devs.get(s, 0)).values,
