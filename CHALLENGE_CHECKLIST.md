@@ -47,6 +47,7 @@ Only work done during the event is judged; disclose any prior development.
 | Page | Answers the question | To review |
 |---|---|---|
 | Overview | What is this, and what's my situation at a glance? | |
+| Outage map | Where is risk, restoration time, past damage and underground service across the area? | Built: 4 views, follows the scenario, outlines your area |
 | Will I lose power? | Risk band, confidence, why | |
 | How long will it last? | Restoration range and what-ifs | |
 | How do I prepare? | Safety and prep steps | |

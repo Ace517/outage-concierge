@@ -21,7 +21,8 @@ The processed data is already in `data/processed/`, so you do NOT need the raw s
 | `CHALLENGE_CHECKLIST.md` | Challenge requirements mapped to pages, with ideas to improve each. |
 | `engine.py` | All logic: risk score, restoration calculator, alert rules, messages. Every assumption is labeled in here. |
 | `build_data.py` | Optional. Rebuilds `data/processed/` from the raw AEP zips. |
-| `data/processed/` | `premises.csv.gz` (anonymized), `circuits.csv`, `meta.json` (personas and benchmarks). |
+| `build_map.py` | Optional. Builds the Outage map's neighborhood hexagons (`hexes.json`) from the raw zips. Keeps existing location codes. |
+| `data/processed/` | `premises.csv.gz` (anonymized), `circuits.csv`, `meta.json` (personas and benchmarks), `hexes.json` (map areas). |
 
 ## Rebuild the data (optional)
 
@@ -29,6 +30,7 @@ The processed data is already in `data/processed/`, so you do NOT need the raw s
     python build_data.py --raw path/to/aep_challenge_hack26/data/raw --workbook path/to/Install_Labor_HackOHIO.xlsx
 
 Each rebuild uses a new random salt, so location codes change and the personas are re-picked automatically.
+After `build_data.py`, run `python build_map.py --raw path/to/aep_challenge_hack26/data/raw` to rebuild the map areas.
 
 ## What is real and what is assumed
 
@@ -55,4 +57,5 @@ The restoration crew and queue assumptions were tuned on that one storm; the ran
 ## Privacy
 
 Premise numbers become a random one-way code. House numbers, coordinates and the life-support flag are not in the app's data at all.
+The map shows only neighborhood hexagons about 450 m across with at least 10 homes; sparser areas are left off.
 Medical steps appear only when the user declares a need.

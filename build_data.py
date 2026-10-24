@@ -34,13 +34,23 @@ OUT = Path(__file__).parent / "data" / "processed"
 
 
 def main():
-    import geopandas as gpd
-
     ap = argparse.ArgumentParser()
     ap.add_argument("--raw", default="../aep_challenge_hack26/data/raw", help="folder with Data1.zip, Data2.zip, matched_upstream.zip")
     ap.add_argument("--workbook", default=None, help="optional path to Install_Labor_HackOHIO.xlsx to cross-check labor constants")
     args = ap.parse_args()
-    raw = Path(args.raw)
+
+    cust, storm, cc, prem, sys_dpk = load(Path(args.raw))
+    write(storm, cc, prem, sys_dpk)
+    if args.workbook:
+        verify_labor(args.workbook)
+
+
+def load(raw: Path):
+    """Read the raw zips and return (customers with geometry, storm damage, circuits table, premises table, system damage rate).
+
+    The premises table has one row per customer row, in the same order. build_map.py relies on that.
+    """
+    import geopandas as gpd
 
     tmp = Path(tempfile.mkdtemp(prefix="aep_"))
     for z, sub in [("Data1.zip", "d1"), ("Data2.zip", "d2"), ("matched_upstream.zip", "up")]:
@@ -131,7 +141,10 @@ def main():
         "hit25": cust.premise.isin(hit_prem).values,
     })
     prem["pct"] = prem.circuit.map(cc.pct)
+    return cust, storm, cc, prem, sys_dpk
 
+
+def write(storm, cc, prem, sys_dpk):
     # ---------------- history benchmarks and back-test ----------------
     rep = storm[(storm.Repaired == "Yes") & (storm.Repaired_D <= LAST_REAL_REPAIR)].copy()
     rep["days"] = (rep.Repaired_D - rep.Report_Tim).dt.days
@@ -196,9 +209,6 @@ def main():
     (OUT / "meta.json").write_text(json.dumps(meta, indent=2))
     print(json.dumps({k: v for k, v in meta.items() if k != "personas"}, indent=2))
     print("personas:", [(p["name"], p["hid"]) for p in personas])
-
-    if args.workbook:
-        verify_labor(args.workbook)
 
 
 def verify_labor(path):

@@ -128,6 +128,13 @@ def load():
     return prem, circ, meta
 
 
+@st.cache_data
+def load_hexes():
+    """Neighborhood hexagons for the Outage map page (built by build_map.py), or None if not built."""
+    f = DATA / "hexes.json"
+    return json.loads(f.read_text()) if f.exists() else None
+
+
 prem, circ, meta = load()
 personas = meta["personas"]
 ss = st.session_state

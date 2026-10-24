@@ -17,6 +17,7 @@ ui.html(ui.CSS)
 welcome = st.Page("views/welcome.py", title="Your details", icon=":material/person:", url_path="welcome")
 pg = st.navigation([
     st.Page("views/overview.py", title="Overview", icon=":material/home:", default=True),
+    st.Page("views/map.py", title="Outage map", icon=":material/map:"),
     st.Page("views/risk.py", title="Will I lose power?", icon=":material/bolt:"),
     st.Page("views/restoration.py", title="How long will it last?", icon=":material/schedule:"),
     st.Page("views/prepare.py", title="How do I prepare?", icon=":material/checklist:"),
