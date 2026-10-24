@@ -34,9 +34,13 @@ section[data-testid="stSidebar"][data-collapsed="true"] [data-testid="stSidebarU
 section[data-testid="stSidebar"][data-collapsed="true"] [data-testid="stSidebarNavSeparator"],
 section[data-testid="stSidebar"][data-collapsed="true"] [data-testid="stSidebarResizeHandle"],
 section[data-testid="stSidebar"][data-collapsed="true"] [data-testid="stSidebarNavLink"] span[label]{display:none!important;}
-section[data-testid="stSidebar"][data-collapsed="true"] [data-testid="stSidebarContent"]{overflow:hidden;padding-top:12px;}
-section[data-testid="stSidebar"][data-collapsed="true"] [data-testid="stSidebarNav"]{padding:0 8px;}
-section[data-testid="stSidebar"][data-collapsed="true"] [data-testid="stSidebarNavLink"]{justify-content:center;padding:10px 0;}
+section[data-testid="stSidebar"][data-collapsed="true"] [data-testid="stSidebarContent"]{overflow:hidden;padding:12px 0 0!important;}
+section[data-testid="stSidebar"][data-collapsed="true"] [data-testid="stSidebarNav"],
+section[data-testid="stSidebar"][data-collapsed="true"] [data-testid="stSidebarNavItems"],
+section[data-testid="stSidebar"][data-collapsed="true"] [data-testid="stSidebarNavItems"] li,
+section[data-testid="stSidebar"][data-collapsed="true"] [data-testid="stSidebarNavLinkContainer"]{width:100%!important;padding:0!important;margin:0!important;}
+section[data-testid="stSidebar"][data-collapsed="true"] [data-testid="stSidebarNavLink"]{width:40px;height:40px;padding:0!important;margin:2px auto;justify-content:center;align-items:center;border-radius:8px;}
+section[data-testid="stSidebar"][data-collapsed="true"] [data-testid="stSidebarNavLink"] > span{margin:0!important;}
 .hero{background:var(--ink);color:#fff;border-radius:10px;padding:30px 34px 26px;border-bottom:6px solid var(--gold);margin-bottom:10px;}
 .hero-title{font-family:'Barlow Semi Condensed','Barlow',sans-serif;font-weight:700;font-size:3.1rem;line-height:1.08;letter-spacing:.2px;margin-bottom:8px;}
 .hero-sub{font-size:1.18rem;line-height:1.45;max-width:46rem;margin:.6rem 0 0;color:#DCE6F5;}
