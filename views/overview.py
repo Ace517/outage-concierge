@@ -25,15 +25,18 @@ risk_txt = "Not enough data" if ctx.conf == "Low" else f"{ctx.band} risk"
 risk_color = "var(--ink)" if ctx.conf == "Low" else ui.BAND_TEXT[ctx.band]
 alerts_txt = "Signed up" if ui.ss.enrolled else "Qualifies, not signed up"
 
+risk_edge = "var(--line)" if ctx.conf == "Low" else ui.BAND_FILL[ctx.band]
+alerts_edge = "var(--blue)" if ui.ss.enrolled else "var(--gold)"
 cards = [
-    ("Will I lose power?", risk_txt, risk_color, "views/risk.py"),
-    ("How long could it last?", ctx.rng, "var(--ink)", "views/restoration.py"),
-    ("Outage alerts", alerts_txt, "var(--ink)", "views/alerts.py"),
+    ("Will I lose power?", risk_txt, risk_color, risk_edge, "views/risk.py"),
+    ("How long could it last?", ctx.rng, "var(--ink)", "var(--blue)", "views/restoration.py"),
+    ("Outage alerts", alerts_txt, "var(--ink)", alerts_edge, "views/alerts.py"),
 ]
 cols = st.columns(3)
-for col, (k, v, color, path) in zip(cols, cards):
+for col, (k, v, color, edge, path) in zip(cols, cards):
     with col:
-        html(f'<div class="card"><div class="k">{esc(k)}</div><div class="v" style="color:{color}">{esc(v)}</div></div>')
+        html(f'<div class="card" style="border-left-color:{edge}"><div class="k">{esc(k)}</div>'
+             f'<div class="v" style="color:{color}">{esc(v)}</div></div>')
         st.page_link(path, label="See details", icon=":material/arrow_forward:")
 
 ui.footer()

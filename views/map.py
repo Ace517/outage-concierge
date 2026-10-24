@@ -6,27 +6,28 @@ import engine
 import ui
 from ui import esc, html
 
-ALPHA = 150
+ALPHA = 215  # mostly opaque so each step stays distinct on the pale base map; street names still show around areas
 # Each view: what colors the areas, its bins (label, test, color) and a one-line description.
-# Risk reuses the band colors from the rest of the site; the others are single-hue light-to-dark ramps.
+# Every view is one hue, light to dark, with a different hue per view so they never read as the same scale.
+# Risk reuses the site's band colors. All ramps pass the dataviz validator (--ordinal) against the map surface.
 VIEWS = {
     "Outage risk": {
         "desc": "Typical outage risk for homes in each area, in the storm scenario chosen in the sidebar.",
         "bins": [(b, None, ui.BAND_FILL[b]) for b in engine.BAND_ORDER],
     },
     "Restoration time": {
-        "desc": "Typical time until most customers in each area are back on, in the chosen scenario.",
-        "bins": [("Under 1 day", 24, "#DCE8F7"), ("1 to 2 days", 48, "#A9C6EA"), ("2 to 3 days", 72, "#6E9FD6"),
-                 ("3 to 5 days", 120, "#3A74B8"), ("5+ days", 1e9, "#1F4E8C")],
+        "desc": "Typical hours until most customers in each area are back on, in the chosen scenario.",
+        "bins": [("Under 24 hours", 24, "#86B6EF"), ("24 to 48 hours", 48, "#5598E7"), ("48 to 72 hours", 72, "#2A78D6"),
+                 ("72 to 120 hours", 120, "#1C5CAB"), ("120+ hours", 1e9, "#0D366B")],
     },
     "Feb 2025 storm damage": {
         "desc": "How many damage reports came from each area in the real Feb 2025 storm. This doesn't change with the scenario.",
-        "bins": [("None", 0, "#E6EAF0"), ("1 report", 1, "#F6D2A8"), ("2 to 3", 3, "#E39A55"), ("4 or more", 1e9, "#A9561A")],
+        "bins": [("None", 0, "#C3C8D1"), ("1 report", 1, "#A99BEA"), ("2 to 3", 3, "#7564D8"), ("4 or more", 1e9, "#4A3AA7")],
     },
     "Underground lines": {
         "desc": "Share of homes in each area with underground service, which wind and falling trees can't reach.",
-        "bins": [("Under 20%", 0.2, "#DDF0EC"), ("20 to 40%", 0.4, "#A7DACF"), ("40 to 60%", 0.6, "#6BBCAB"),
-                 ("60 to 80%", 0.8, "#368F7E"), ("80% or more", 1.01, "#1B5F53")],
+        "bins": [("Under 20%", 0.2, "#66C2A2"), ("20 to 40%", 0.4, "#36A57F"), ("40 to 60%", 0.6, "#1C8865"),
+                 ("60 to 80%", 0.8, "#11684D"), ("80% or more", 1.01, "#094834")],
     },
 }
 

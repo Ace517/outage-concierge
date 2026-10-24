@@ -96,7 +96,7 @@ ASSET_TO_CAT = {
 }
 
 # ASSUMPTIONS for crews and queue time. Calibrated on the Feb 2025 storm (not validated on any other):
-#  - small circuits wait in the queue (about a day in a major storm) while crews work the biggest pockets first
+#  - small circuits wait in the queue (about 24 hours in a major storm) while crews work the biggest pockets first
 #  - the utility surges roughly one crew per 12 damaged items, up to 15 crews
 CREW_SIZE = 2            # workers per crew
 SHIFT_H = 16             # storm shift length
@@ -245,13 +245,11 @@ def restore(n_items, mix, access_share, special_share, crews, sev):
 
 
 def fmt_range(lo, hi):
-    if hi <= 30:
-        a = max(1, round(lo))
-        b = max(a + 1, math.ceil(hi))
-        return f"{a} to {b} hours"
-    a = max(0.5, math.floor(lo / 12) / 2)
-    b = max(a + 0.5, math.ceil(hi / 12) / 2)
-    return f"{a:g} to {b:g} days"
+    """Always in hours. Rounded outward to 1 h (short outages), 6 h (up to 5 days) or 12 h (longer)."""
+    step = 1 if hi <= 30 else 6 if hi <= 120 else 12
+    a = math.floor(lo / step) * step or max(1, round(lo))
+    b = max(a + step, math.ceil(hi / step) * step)
+    return f"{a} to {b} hours"
 
 
 def what_if(n_items, mix, access_share, special_share, crews, sev):

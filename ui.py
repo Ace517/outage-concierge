@@ -16,13 +16,20 @@ import engine
 
 DATA = Path(__file__).parent / "data" / "processed"
 
-BAND_FILL = {"Low": "#3D8B5F", "Moderate": "#E3B23C", "High": "#E07B39", "Very high": "#B3261E"}
-BAND_TEXT = {"Low": "#1E5F3C", "Moderate": "#7A5B00", "High": "#A04A0B", "Very high": "#8F1B14"}
+# Color system (60-30-10): light cool neutrals, navy + brand blue, amber accent for calls to action.
+# Risk is one burnt-orange hue, light to dark: orange complements the blue brand and stays readable with
+# color-vision deficiency, and the band name is always shown next to the color. Red is reserved for safety.
+# Ramps checked with the dataviz validator (--ordinal) against the page and map surfaces.
+BAND_FILL = {"Low": "#F0995A", "Moderate": "#D9702F", "High": "#B0521F", "Very high": "#7A3714"}
+BAND_TEXT = {"Low": "#B0521F", "Moderate": "#9A4A1C", "High": "#8C4218", "Very high": "#6A2E10"}  # >= 4.8:1 on the page
 
 CSS = """
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Semi+Condensed:wght@500;600;700&display=swap');
-:root{--ink:#14213D;--blue:#1F5FA8;--sky:#E8F0FA;--line:#C9D5E5;--muted:#4A5A72;--gold:#F2B134;}
+:root{--ink:#14213D;--blue:#1F5FA8;--sky:#E8F0FA;--line:#C9D5E5;--muted:#4A5A72;--gold:#F2B134;--gold-dark:#D99A1E;}
+[data-testid="stBaseButton-primary"]{background:var(--gold)!important;border-color:var(--gold)!important;color:var(--ink)!important;font-weight:600;}
+[data-testid="stBaseButton-primary"]:hover{background:var(--gold-dark)!important;border-color:var(--gold-dark)!important;}
+[data-testid="stBaseButton-primary"] p{color:var(--ink)!important;}
 .stApp{background:#F4F7FB;font-family:'Barlow','Segoe UI',system-ui,sans-serif;color:var(--ink);}
 .stApp p,.stApp li,.stApp label,.stApp button,.stApp input,.stApp textarea,.stApp [data-baseweb="select"] div{font-family:'Barlow','Segoe UI',system-ui,sans-serif;}
 [data-testid="stAppDeployButton"],[data-testid="stMainMenu"],[data-testid="stDeployButton"],.stDeployButton{display:none;}
@@ -41,6 +48,7 @@ section[data-testid="stSidebar"][data-collapsed="true"] [data-testid="stSidebarN
 section[data-testid="stSidebar"][data-collapsed="true"] [data-testid="stSidebarNavLinkContainer"]{width:100%!important;padding:0!important;margin:0!important;}
 section[data-testid="stSidebar"][data-collapsed="true"] [data-testid="stSidebarNavLink"]{width:40px;height:40px;padding:0!important;margin:2px auto;justify-content:center;align-items:center;border-radius:8px;}
 section[data-testid="stSidebar"][data-collapsed="true"] [data-testid="stSidebarNavLink"] > span{margin:0!important;}
+@media (max-width:767.98px){.stApp:has(section[data-testid="stSidebar"][data-collapsed="true"]) [data-testid="stMain"]{padding-left:64px;}}
 .hero{background:var(--ink);color:#fff;border-radius:10px;padding:30px 34px 26px;border-bottom:6px solid var(--gold);margin-bottom:10px;}
 .hero-title{font-family:'Barlow Semi Condensed','Barlow',sans-serif;font-weight:700;font-size:3.1rem;line-height:1.08;letter-spacing:.2px;margin-bottom:8px;}
 .hero-sub{font-size:1.18rem;line-height:1.45;max-width:46rem;margin:.6rem 0 0;color:#DCE6F5;}
@@ -72,7 +80,7 @@ h3.sq{font-family:'Barlow Semi Condensed','Barlow',sans-serif;font-weight:600;fo
 ul.why{margin:6px 0 0;padding-left:0;list-style:none;}
 ul.why li{padding:7px 0 7px 0;border-top:1px solid #E4EAF3;line-height:1.4;}
 ul.why li:first-child{border-top:none;}
-b.up{color:#A04A0B;} b.down{color:#1E5F3C;} b.neutral{color:var(--muted);}
+b.up{color:#9A4A1C;} b.down{color:var(--blue);} b.neutral{color:var(--muted);}
 .big{font-family:'Barlow Semi Condensed','Barlow',sans-serif;font-weight:700;font-size:2.8rem;line-height:1.05;color:var(--ink);}
 .confirmed{margin-top:12px;padding-top:10px;border-top:1px solid #E4EAF3;color:var(--muted);font-size:.98rem;}
 .safety{background:#FDECEA;border:2px solid #B3261E;color:#4A0D08;border-radius:8px;padding:14px 18px;margin:8px 0;}
@@ -87,7 +95,7 @@ table.t td{padding:9px 12px;border-top:1px solid #E4EAF3;vertical-align:top;}
 .meta{color:var(--muted);font-size:.93rem;margin:6px 2px;}
 .where{background:var(--sky);border-radius:8px;padding:10px 14px;margin:8px 0 2px;font-size:1rem;}
 .fallback{background:#FFF8E6;border:2px solid #E7B84A;border-radius:8px;padding:16px 20px;margin:10px 0;}
-.card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px 18px;height:100%;}
+.card{background:#fff;border:1px solid var(--line);border-left:6px solid var(--blue);border-radius:8px;padding:14px 18px;height:100%;}
 .card .k{color:var(--muted);font-size:.95rem;margin-bottom:4px;}
 .card .v{font-family:'Barlow Semi Condensed','Barlow',sans-serif;font-weight:700;font-size:1.7rem;line-height:1.1;}
 @media (max-width:640px){.hero-title{font-size:2.3rem;}.big{font-size:2.1rem;}.bandname{font-size:2rem;}}
@@ -221,7 +229,7 @@ between you and the substation (10%). The storm scenario scales it. It ranks hom
 
 **How the restoration range works.** Damaged items on your circuit, times labor hours for each repair type, times {engine.ILM} for travel and setup, \
 divided by the workers on the circuit, plus rest between shifts and time waiting for crews. The range is wide on purpose. \
-Two assumptions (about one crew per {engine.ITEMS_PER_CREW} damaged items, and about a day of queue time in a major storm) were tuned to the Feb 2025 storm. \
+Two assumptions (about one crew per {engine.ITEMS_PER_CREW} damaged items, and about 24 hours of queue time in a major storm) were tuned to the Feb 2025 storm. \
 On that same storm, the range contained the observed finish day for {bt['overlap']} of {bt['circuits']} circuits ({bt['share']:.0%}). \
 That was tuned on, not independently tested.
 
