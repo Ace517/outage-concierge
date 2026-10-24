@@ -42,7 +42,7 @@ section[data-testid="stSidebar"][data-collapsed="true"] [data-testid="stSidebarN
 section[data-testid="stSidebar"][data-collapsed="true"] [data-testid="stSidebarNavLink"]{width:40px;height:40px;padding:0!important;margin:2px auto;justify-content:center;align-items:center;border-radius:8px;}
 section[data-testid="stSidebar"][data-collapsed="true"] [data-testid="stSidebarNavLink"] > span{margin:0!important;}
 .hero{background:var(--ink);color:#fff;border-radius:10px;padding:30px 34px 26px;border-bottom:6px solid var(--gold);margin-bottom:10px;}
-.hero-title{font-family:'Barlow Semi Condensed','Barlow',sans-serif;font-weight:700;font-size:3.1rem;line-height:1.08;letter-spacing:.2px;margin-bottom:8px;}
+.hero-title{font-family:'Barlow Semi Condensed','Barlow',sans-serif;font-weight:100;font-size:3.1rem;line-height:1.08;letter-spacing:.2px;margin-bottom:8px;}
 .hero-sub{font-size:1.18rem;line-height:1.45;max-width:46rem;margin:.6rem 0 0;color:#DCE6F5;}
 .demo-note{display:inline-block;margin-top:16px;background:#fff;color:var(--ink);font-weight:600;border-radius:6px;padding:6px 12px;font-size:.95rem;}
 .legend{display:flex;gap:14px;flex-wrap:wrap;margin:10px 0 4px;}
