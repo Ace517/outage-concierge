@@ -1,61 +1,85 @@
-# AI Outage Concierge (Hack/OHIO 2026, AEP challenge)
+# AI Outage Concierge
 
-One-page Streamlit app: pick a customer and a storm scenario, get an outage-risk band with reasons,
-a restoration range you can stress-test with sliders, a tailored prep checklist, alert eligibility,
-and the four customer messages (before the storm, outage confirmed, estimate updated, power restored).
+**A storm assistant for one home.** Pick a home and a storm scenario, and it answers the three questions customers ask:
+**Will I lose power? How long could it last? What should I do?** Built in 24 hours at **HackOHI/O 2026** for the **AEP challenge**
+by team **Rio Ganga**: Darsh Patel, Pranav Kottagi, Shishir Joshi and Lucas Teitelbaum (Ohio State).
 
-## Run it (2 minutes)
+**Live demo:** _link coming soon_
 
-    pip install -r requirements.txt
-    streamlit run app.py
+> A prototype built on the organizers' sanitized sample data for Roanoke, Vinton and Salem, Virginia. Not endorsed or used by AEP.
+> Customer names are fictional, and every number is an estimate.
 
-The processed data is already in `data/processed/`, so you do NOT need the raw shapefiles.
+## What you can do in it
+
+| Page | What it shows |
+|---|---|
+| About this project | What this is and how to try it (the first page new visitors see) |
+| Your details | Pick a city, street and anonymous home, or one of four demo customers (Maria, Devon, Priya, David) |
+| Overview | Your risk, restoration range and alert status at a glance |
+| Outage map | Neighborhood map with four views: outage risk, restoration time, Feb 2025 storm damage, underground lines |
+| Will I lose power? | Risk band (Low to Very high), confidence, and the three reasons behind it |
+| How long will it last? | Restoration range in hours, what-if sliders, and every step of the math |
+| How do I prepare? | Safety steps and a prep checklist for your situation (medical steps only if you declare a need) |
+| Outage alerts | Eligibility, sign-up with a phone number (not stored), and when a person steps in |
+| Messages we send | The four texts: before the storm, outage confirmed, estimate updated, power restored |
+| How this works | Data, method, privacy and limits |
+
+Change the **storm scenario** (Breezy, Strong wind, Major storm, Extreme) in the sidebar and every page and the map update.
+
+## Run it on your computer (about 2 minutes)
+
+You need **Python 3.10 or newer**.
+
+```bash
+git clone https://github.com/Ace517/outage-concierge.git
+cd outage-concierge
+python -m venv .venv
+```
+
+Then install and start it:
+
+- **Windows:** `.venv\Scripts\python.exe -m pip install -r requirements.txt` then `.venv\Scripts\python.exe -m streamlit run app.py`
+- **Mac / Linux:** `.venv/bin/python -m pip install -r requirements.txt` then `.venv/bin/python -m streamlit run app.py`
+
+Open http://localhost:8501. The processed data is included, so you don't need the raw AEP files.
+The outage map needs an internet connection for its street tiles.
+
+## How it works
+
+**Risk** is a transparent exposure score, not a trained model (the data has no "who lost power" labels and no weather):
+45% circuit damage per customer in the Feb 2025 storm, 25% whether equipment feeding this exact home was damaged,
+20% overhead vs underground service, 10% protective devices between the home and the substation. The storm scenario scales it.
+
+**Restoration** = damaged items x labor hours per repair type (AEP's workbook) x 4.5 for travel, safety and setup,
+divided by the crews' workers, plus rests between 16-hour shifts and time to assess damage and wait for crews. Shown as a range in hours.
+
+**Honest limits:** one storm, no weather, no customer outage counts, damage dates only to the day. The crew and queue assumptions
+were tuned on that one storm; the range contains the observed finish day for 40 of 62 circuits (calibrated, not validated).
+Every assumption is labeled in `engine.py` and on the "How this works" page.
+
+## Privacy
+
+- Premise numbers become random one-way codes. House numbers, coordinates and the life-support flag are not in the app's data.
+- The map shows only neighborhoods about 450 m across with at least 10 homes; sparser areas are left off.
+- Medical needs are never guessed; only the user can declare them.
+- The alert sign-up checks a phone number and keeps only its last 4 digits in the browser session. Nothing is saved or sent.
 
 ## Files
 
 | File | What it does |
 |---|---|
-| `app.py` | Entry point: page list (navigation) and sidebar. |
-| `ui.py` | Shared styling, sidebar controls (customer, scenario, medical, alerts) and per-location numbers. |
-| `views/` | One file per page: overview, risk, restoration, prepare, alerts, messages, about. |
-| `CHALLENGE_CHECKLIST.md` | Challenge requirements mapped to pages, with ideas to improve each. |
-| `engine.py` | All logic: risk score, restoration calculator, alert rules, messages. Every assumption is labeled in here. |
-| `build_data.py` | Optional. Rebuilds `data/processed/` from the raw AEP zips. |
-| `build_map.py` | Optional. Builds the Outage map's neighborhood hexagons (`hexes.json`) from the raw zips. Keeps existing location codes. |
-| `data/processed/` | `premises.csv.gz` (anonymized), `circuits.csv`, `meta.json` (personas and benchmarks), `hexes.json` (map areas). |
+| `app.py` | Entry point: page list and sidebar |
+| `ui.py` | Shared styling, sidebar controls and per-location numbers |
+| `views/` | One file per page |
+| `engine.py` | All logic: risk score, restoration calculator, alert rules, messages |
+| `data/processed/` | Anonymized homes, circuits, personas and benchmarks, map areas |
+| `build_data.py`, `build_map.py` | Optional: rebuild `data/processed/` from the raw AEP zips (`pip install -r requirements-build.txt`) |
+| `PROJECT_BRIEF.md`, `CHALLENGE_CHECKLIST.md` | Our project notes and how each challenge requirement maps to a page |
 
-## Rebuild the data (optional)
+To rebuild the data: `python build_data.py --raw path/to/aep_challenge_hack26/data/raw`, then
+`python build_map.py --raw path/to/aep_challenge_hack26/data/raw`. A full rebuild changes the anonymous location codes.
 
-    pip install -r requirements-build.txt
-    python build_data.py --raw path/to/aep_challenge_hack26/data/raw --workbook path/to/Install_Labor_HackOHIO.xlsx
+## Built with
 
-Each rebuild uses a new random salt, so location codes change and the personas are re-picked automatically.
-After `build_data.py`, run `python build_map.py --raw path/to/aep_challenge_hack26/data/raw` to rebuild the map areas.
-
-## What is real and what is assumed
-
-Real (from the AEP package): customer, circuit and damage tables, the premise-to-equipment topology, and the labor-hour workbook
-(equipment hours, access adders, 4.5x indirect labor multiplier).
-
-Assumed (all labeled in `engine.py` and shown in the app's "How this works" box):
-storm scenario multipliers, risk weights (45/25/20/10), wire-repair hours (not in the workbook), crew surge (1 crew per 12 items, max 15),
-queue time (about a day in a major storm), range width, and the alert rules.
-
-Honest limits: one storm in the data, no weather, no customer outage counts, day-level dates only.
-The restoration crew and queue assumptions were tuned on that one storm; the range contains the observed finish day for 64% of circuits (in-sample).
-
-## Demo path for the video (the submission video is 3 minutes and must also cover team name, project name, concept and development process)
-
-0. The site opens on "Your details": enter a first name, city, street and home, or tap a demo customer.
-1. Maria (Very high risk, medical need). Show the gauge, the three reasons, the confidence dots.
-2. Drag the crews slider and the damaged-items slider. The range and the "what could move it" table update.
-3. Scroll: red safety box, medical steps, alert rules (tick "signed up"), then the four message tabs.
-4. Switch to Devon (Low risk) to show the same questions get a calm answer.
-5. Switch the scenario to Extreme, then open "Pick another location" and click "Try a location outside our data" to show the fallback.
-6. Open "How this works and what it can't do" and say the limits out loud.
-
-## Privacy
-
-Premise numbers become a random one-way code. House numbers, coordinates and the life-support flag are not in the app's data at all.
-The map shows only neighborhood hexagons about 450 m across with at least 10 homes; sparser areas are left off.
-Medical steps appear only when the user declares a need.
+Python, Streamlit, pandas, NumPy, GeoPandas, Shapely and pydeck, with a CARTO / OpenStreetMap base map.
+AI coding assistance from Claude Code; the team made the design and method decisions and checked the numbers.

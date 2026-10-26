@@ -15,6 +15,7 @@ ui.init_state()
 ui.html(ui.CSS)
 
 welcome = st.Page("views/welcome.py", title="Your details", icon=":material/person:", url_path="welcome")
+intro = st.Page("views/intro.py", title="About this project", icon=":material/waving_hand:", url_path="intro")
 pg = st.navigation([
     st.Page("views/overview.py", title="Overview", icon=":material/home:", default=True),
     st.Page("views/map.py", title="Outage map", icon=":material/map:"),
@@ -25,11 +26,12 @@ pg = st.navigation([
     st.Page("views/messages.py", title="Messages we send", icon=":material/sms:"),
     st.Page("views/about.py", title="How this works", icon=":material/info:"),
     welcome,
+    intro,
 ], position="sidebar" if ui.ss.onboarded else "hidden")
 
-# Everyone starts on the details page.
-if not ui.ss.onboarded and pg.url_path != "welcome":
-    st.switch_page(welcome)
-if pg.url_path != "welcome":
+# New visitors start on the intro page, then enter their details.
+if not ui.ss.onboarded and pg.url_path not in ("intro", "welcome"):
+    st.switch_page(intro)
+if ui.ss.onboarded and pg.url_path != "welcome":
     ui.sidebar()
 pg.run()

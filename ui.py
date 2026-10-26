@@ -5,6 +5,7 @@ All logic lives in engine.py. This file and views/ are layout and wording only.
 from __future__ import annotations
 
 import json
+import re
 from html import escape as esc
 from pathlib import Path
 from types import SimpleNamespace
@@ -171,6 +172,34 @@ def pick_persona(i: int):
     ss.medical = personas[i]["medical"]
     ss.enrolled = personas[i].get("enrolled", False)
     ss.name = personas[i]["name"]
+
+
+def phone_last4(raw: str):
+    """Last 4 digits of a valid US mobile number, or None. The full number is never kept."""
+    digits = re.sub(r"\D", "", raw or "")
+    if len(digits) == 11 and digits.startswith("1"):
+        digits = digits[1:]
+    return digits[-4:] if len(digits) == 10 and digits[0] not in "01" else None
+
+
+def masked_phone():
+    last4 = ss.get("alert_last4")
+    return f"(•••) •••-{last4}" if last4 else None
+
+
+def sign_up_alerts():
+    last4 = phone_last4(ss.get("alert_phone_input", ""))
+    if not last4:
+        ss.alert_err = "Enter a 10-digit US mobile number, like (614) 555-0123."
+    elif not ss.get("alert_consent"):
+        ss.alert_err = "Tick the box to agree to receive outage texts."
+    else:
+        ss.alert_last4, ss.enrolled, ss.alert_err = last4, True, ""
+    ss.alert_phone_input = ""  # drop the full number right away
+
+
+def stop_alerts():
+    ss.enrolled, ss.alert_last4 = False, None
 
 
 def kept_slider(col, label: str, lo: int, hi: int, default: int, key: str) -> int:
