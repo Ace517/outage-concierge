@@ -4,7 +4,7 @@
 **Will I lose power? How long could it last? What should I do?** Built in 24 hours at **HackOHI/O 2026** for the **AEP challenge**
 by team **Rio Ganga**: Darsh Patel, Pranav Kottagi, Shishir Joshi and Lucas Teitelbaum (Ohio State).
 
-**Live demo:** _link coming soon_
+**Live demo: https://outage-concierge.streamlit.app** (no install needed; it may take a few seconds to wake up)
 
 > A prototype built on the organizers' sanitized sample data for Roanoke, Vinton and Salem, Virginia. Not endorsed or used by AEP.
 > Customer names are fictional, and every number is an estimate.
